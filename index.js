@@ -7,7 +7,70 @@ const products = data.products;
 const express = require('express');
 const server = express();
 
+// Third party Middleware :
+const morgan = require("morgan");
 
+// server.use(morgan('dev'));
+server.use(morgan('default'));  // logger h ek 
+
+
+
+
+
+
+//MiddleWare :-
+
+// -->in-Built :
+
+//body ke json data ko padhne lagega wo ..iss in-built middleware ke through(phle isko bodyParser bolte the)
+// server.use(express.json());
+
+
+// static hosting ke liya use.. slash("/") ke through excess kar sakte files ko server se koi matlab nhi
+server.use(express.static('public'));
+
+// Parse incoming requests with URL-encoded payloads.
+// server.use(express.urlencoded());
+
+// -----------------------------------------------------------------------------------------------------------------
+
+// --> Application level middleware :
+
+// server.use((req,res,next)=>{
+//     console.log(req.method, req.ip,req.hostname,new Date() ,req.get('User-Agent'))
+//     next();
+// })
+
+
+
+
+// --> Route level middleware :
+
+// const auth = (req,res,next)=>{
+//     if(req.body.password==="123"){
+//         console.log("password :",req.query.password);
+//         next();
+//     }else{
+//         res.sendStatus(404);
+//     }
+// }
+
+// server.get("/",auth,(req,res)=>{
+//     res.json({type:'get'});
+// })
+// server.post("/",auth,(req,res)=>{
+//     res.json({type:"POST"});
+// })
+
+
+server.listen(5000,()=>{
+    console.log("server is started")
+})
+
+//-----------------------------------------------------------------------------
+
+
+/*
 //API's
 
 server.get('/',(req,res)=>{
@@ -33,7 +96,7 @@ server.listen(5000,()=>{
 
 
 
-
+*/
 
 
 /* --> Creating server with the help of express :-
