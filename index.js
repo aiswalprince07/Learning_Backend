@@ -1,17 +1,28 @@
 //Express :-
-const fs = require('fs');
-const index = fs.readFileSync('index.html','utf-8');
-const data = JSON.parse(fs.readFileSync('data.json','utf-8'));
-const products = data.products;
 
-const express = require('express');
-const morgan = require('morgan');
+const express = require("express");
+const morgan = require("morgan");
 const server = express();
+const productRouter = require('./routes/product.js');
+const userRouter = require('./routes/user.js');
 
 //bodyParser
 server.use(express.json());
 // server.use(morgan('default'));
-server.use(express.static('public'));
+server.use(express.static("public"));
+server.use('/products',productRouter.router);   // middleware --> issi me sabhi routers h
+server.use('/users',userRouter.router);
+
+server.listen(5000, () => {
+  console.log("server is started");
+});
+
+
+
+
+
+
+/*
 
 
 //REST API's (Creating REST API's by using Express):-
@@ -76,23 +87,15 @@ server.listen(5000,()=>{
 
 
 
-
-
-
+*/
 
 //----------------------------------------------------------
-
 
 // Third party Middleware :
 // const morgan = require("morgan");
 
 // server.use(morgan('dev'));
-// server.use(morgan('default'));  // logger h ek 
-
-
-
-
-
+// server.use(morgan('default'));  // logger h ek
 
 //MiddleWare :-
 
@@ -100,7 +103,6 @@ server.listen(5000,()=>{
 
 //body ke json data ko padhne lagega wo ..iss in-built middleware ke through(phle isko bodyParser bolte the)
 // server.use(express.json());
-
 
 // static hosting ke liya use.. slash("/") ke through excess kar sakte files ko server se koi matlab nhi
 // server.use(express.static('public'));
@@ -116,9 +118,6 @@ server.listen(5000,()=>{
 //     console.log(req.method, req.ip,req.hostname,new Date() ,req.get('User-Agent'))
 //     next();
 // })
-
-
-
 
 // --> Route level middleware :
 
@@ -138,13 +137,11 @@ server.listen(5000,()=>{
 //     res.json({type:"POST"});
 // })
 
-
 // server.listen(5000,()=>{
 //     console.log("server is started")
 // })
 
 //-----------------------------------------------------------------------------
-
 
 /*
 //API's
@@ -174,7 +171,6 @@ server.listen(5000,()=>{
 
 */
 
-
 /* --> Creating server with the help of express :-
 
 const express = require('express');
@@ -185,30 +181,6 @@ server.listen(5000,()=>{
 });
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Learning http ,fs module :
 //Read file and dynamically change the content like -->title ,price,id from JSON data
@@ -246,7 +218,6 @@ server.listen(5000);
 
 
 */
-
 
 /*
 
