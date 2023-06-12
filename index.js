@@ -5,13 +5,89 @@ const data = JSON.parse(fs.readFileSync('data.json','utf-8'));
 const products = data.products;
 
 const express = require('express');
+const morgan = require('morgan');
 const server = express();
 
+//bodyParser
+server.use(express.json());
+// server.use(morgan('default'));
+server.use(express.static('public'));
+
+
+//REST API's (Creating REST API's by using Express):-
+
+//API ROOT ,Base URL , ex =>google.com/api/v2/...
+//API ke bhi versions hote..
+
+// Standerd Products API's
+
+//kis tarah ka API , , /...
+
+//Create POST /products   C R U D
+server.post('/products',(req,res)=>{ 
+    // console.log(req.body);
+    products.push(req.body);
+    res.sendStatus(201).json(products);
+})
+
+//Read  GET /products
+server.get('/products',(req,res)=>{
+    res.json(products);
+})
+
+//Read GET /products/:id
+server.get('/products/:id',(req,res)=>{
+    const id = req.params.id;
+    const product = products.find(p=>p.id===+id);
+    // console.log(product);
+    res.sendStatus(200).json(product);
+})
+
+//Update PUT /products/:id     (pichle data ko override kar deta )
+server.put('/products/:id',(req,res)=>{
+    const id = +req.params.id;
+    const productIndex = products.findIndex(p=>p.id===id);
+    products.splice(productIndex,1,{...req.body,id:id});
+    res.sendStatus(200).json(products);
+
+})
+
+//Update PATCH /products/:id   (jitne properties change karna chahte utna hi hoga )
+server.patch('products/:id',(req,res)=>{
+    const id = +req.params.id;
+    const productIndex = products.findIndex(p=>p.id===id);
+    const product = products[productIndex];
+    products.splice(productIndex,1,{...product,...req.body});
+    res.sendStatus(200).json(products);
+})
+
+// Delete DELETE /products/:id
+server.delete('/products/:id',(req,res)=>{
+    const id = +req.params.id;
+    const productIndex = products.findIndex(p=>p.id===id);
+    products.splice(productIndex,1);
+    res.sendStatus(200).json();
+})
+
+
+server.listen(5000,()=>{
+    console.log("server is started")
+})
+
+
+
+
+
+
+
+//----------------------------------------------------------
+
+
 // Third party Middleware :
-const morgan = require("morgan");
+// const morgan = require("morgan");
 
 // server.use(morgan('dev'));
-server.use(morgan('default'));  // logger h ek 
+// server.use(morgan('default'));  // logger h ek 
 
 
 
@@ -27,7 +103,7 @@ server.use(morgan('default'));  // logger h ek
 
 
 // static hosting ke liya use.. slash("/") ke through excess kar sakte files ko server se koi matlab nhi
-server.use(express.static('public'));
+// server.use(express.static('public'));
 
 // Parse incoming requests with URL-encoded payloads.
 // server.use(express.urlencoded());
@@ -63,9 +139,9 @@ server.use(express.static('public'));
 // })
 
 
-server.listen(5000,()=>{
-    console.log("server is started")
-})
+// server.listen(5000,()=>{
+//     console.log("server is started")
+// })
 
 //-----------------------------------------------------------------------------
 
