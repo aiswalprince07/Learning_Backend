@@ -1,22 +1,41 @@
 //Express :-
-
+require('dotenv').config();
+const mongoose = require('mongoose');
+const {Schema} = mongoose;
 const express = require("express");
 const morgan = require("morgan");
 const server = express();
 const productRouter = require('./routes/product.js');
 const userRouter = require('./routes/user.js');
 
+
+// //db connection
+main().catch(err => console.log(err));
+
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/test');
+  console.log("database connected")
+}
+
+
+
+
+
+
+
+
 //bodyParser
 server.use(express.json());
 // server.use(morgan('default'));
-server.use(express.static("public"));
+server.use(express.static(process.env.PUBLIC_DIR));
 server.use('/products',productRouter.router);   // middleware --> issi me sabhi routers h
 server.use('/users',userRouter.router);
 
-server.listen(5000, () => {
+server.listen(process.env.PORT, () => {
   console.log("server is started");
 });
 
+ 
 
 
 
